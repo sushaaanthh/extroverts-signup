@@ -8,6 +8,7 @@ import { LocationStep } from './pages/LocationStep';
 import { Success } from './pages/Success';
 import { Toast } from './components/Toast';
 import { useSignupWizard } from './hooks/useSignupWizard';
+import { WizardProvider } from './context/WizardContext';
 import type { Screen } from './types/signup';
 
 export default function App() {
@@ -24,25 +25,27 @@ export default function App() {
   const go = (s: Screen) => setScreen(s);
 
   return (
-    <div className="min-h-screen bg-black">
-      {toast && <Toast message={toast} onDismiss={() => setToast(undefined)} />}
+    <WizardProvider value={wizard}>
+      <div className="min-h-screen bg-black">
+        {toast && <Toast message={toast} onDismiss={() => setToast(undefined)} />}
 
-      {screen === 'landing' && (
-        <Home onGetStarted={() => go('terms')} />
-      )}
+        {screen === 'landing' && (
+          <Home onGetStarted={() => go('terms')} />
+        )}
 
-      {screen === 'terms' && (
-        <Terms onAccept={() => { wizard.goToStep('email'); go('email'); }} />
-      )}
+        {screen === 'terms' && (
+          <Terms onAccept={() => { wizard.goToStep('email'); go('email'); }} />
+        )}
 
-      {screen === 'email' && <EmailStep />}
-      {screen === 'otp' && <OTPStep />}
-      {screen === 'profile' && <ProfileStep />}
-      {screen === 'location' && (
-        <LocationStep onToast={(m) => setToast(m)} />
-      )}
+        {screen === 'email' && <EmailStep />}
+        {screen === 'otp' && <OTPStep />}
+        {screen === 'profile' && <ProfileStep />}
+        {screen === 'location' && (
+          <LocationStep onToast={(m) => setToast(m)} />
+        )}
 
-      {screen === 'success' && <Success name={wizard.form.name} />}
-    </div>
+        {screen === 'success' && <Success name={wizard.form.name} />}
+      </div>
+    </WizardProvider>
   );
 }

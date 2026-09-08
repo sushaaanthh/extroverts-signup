@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Logo } from '../components/Logo';
 import { PrimaryButton, SecondaryButton } from '../components/Button';
 import { TextInput } from '../components/TextInput';
 import { PronounSelector } from '../components/PronounSelector';
 import { ProgressIndicator } from '../components/ProgressIndicator';
-import { useSignupWizard } from '../hooks/useSignupWizard';
+import { useWizard } from '../context/WizardContext';
 
 function validateName(name: string): string | undefined {
   if (!name || !name.trim()) return 'Name is required.';
@@ -21,10 +21,11 @@ function validateAge(age: string): string | undefined {
 }
 
 export function ProfileStep() {
-  const wizard = useSignupWizard();
+  const wizard = useWizard();
   const [errors, setErrors] = useState<{ name?: string; age?: string; pronouns?: string }>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
+  const submittingRef = useRef(false);
 
   const getErrors = useCallback(() => {
     const e: { name?: string; age?: string; pronouns?: string } = {};
@@ -46,16 +47,19 @@ export function ProfileStep() {
   }, [wizard.form, touched, getErrors]);
 
   const handleNext = async () => {
+    if (submittingRef.current) return;
     setTouched({ name: true, age: true, pronouns: true });
     const e = getErrors();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
+    submittingRef.current = true;
     setLoading(true);
     try {
       await new Promise((r) => setTimeout(r, 600));
       wizard.goNext();
     } finally {
       setLoading(false);
+      submittingRef.current = false;
     }
   };
 
@@ -80,7 +84,7 @@ export function ProfileStep() {
               id="name"
               label="Your name"
               value={wizard.form.name}
-              onChange={(val) => wizard.updateForm({ name: val })}
+              onChange={(val) => wizard.updateForm({ name: val.trim() })}
               onBlur={() => setTouched((t) => ({ ...t, name: true }))}
               placeholder="NAME"
               error={errors.name}

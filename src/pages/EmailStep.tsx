@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Logo } from '../components/Logo';
 import { PrimaryButton, SecondaryButton } from '../components/Button';
 import { TextInput } from '../components/TextInput';
 import { Checkbox } from '../components/Checkbox';
 import { ProgressIndicator } from '../components/ProgressIndicator';
-import { useSignupWizard } from '../hooks/useSignupWizard';
+import { useWizard } from '../context/WizardContext';
 
 async function simulateSendEmail(_email: string): Promise<void> {
   await new Promise((r) => setTimeout(r, 800));
@@ -18,10 +18,11 @@ function validateEmail(email: string): string | undefined {
 }
 
 export function EmailStep() {
-  const wizard = useSignupWizard();
+  const wizard = useWizard();
   const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState(false);
+  const submittingRef = useRef(false);
 
   const validate = useCallback(() => {
     const err = validateEmail(wizard.form.email);
@@ -34,8 +35,10 @@ export function EmailStep() {
   }, [wizard.form.email, touched]);
 
   const handleProceed = async () => {
+    if (submittingRef.current) return;
     setTouched(true);
     if (!validate()) return;
+    submittingRef.current = true;
     setLoading(true);
     try {
       await simulateSendEmail(wizard.form.email);
@@ -44,6 +47,7 @@ export function EmailStep() {
       setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
+      submittingRef.current = false;
     }
   };
 
@@ -71,7 +75,7 @@ export function EmailStep() {
               label="Email address"
               type="email"
               value={wizard.form.email}
-              onChange={(val) => wizard.updateForm({ email: val })}
+              onChange={(val) => wizard.updateForm({ email: val.trim() })}
               onBlur={() => { setTouched(true); validate(); }}
               placeholder="EMAIL"
               error={error}

@@ -4,7 +4,7 @@ import { PrimaryButton, SecondaryButton, TextButton } from '../components/Button
 import { OTPInput } from '../components/OTPInput';
 import { ProgressIndicator } from '../components/ProgressIndicator';
 import { Toast } from '../components/Toast';
-import { useSignupWizard } from '../hooks/useSignupWizard';
+import { useWizard } from '../context/WizardContext';
 
 const DEMO_OTP = '123456';
 const RESEND_COOLDOWN = 24;
@@ -15,12 +15,12 @@ async function verifyOtp(code: string): Promise<boolean> {
 }
 
 export function OTPStep() {
-  const wizard = useSignupWizard();
+  const wizard = useWizard();
   const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(RESEND_COOLDOWN);
-  const [resendMessage, setResendMessage] = useState<string | undefined>();
   const [toast, setToast] = useState<string | undefined>();
+  const verifyingRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const startCountdown = useCallback((secs: number) => {
@@ -45,19 +45,21 @@ export function OTPStep() {
     setError(undefined);
     setToast('OTP sent again.');
     startCountdown(RESEND_COOLDOWN);
-    setTimeout(() => setToast(undefined), 3000);
   };
 
   const handleVerify = async () => {
+    if (verifyingRef.current) return;
     const code = wizard.form.otp.join('');
     if (code.length < 6) {
       setError('Please enter the 6-digit OTP.');
       return;
     }
+    verifyingRef.current = true;
     setLoading(true);
     setError(undefined);
     const ok = await verifyOtp(code);
     setLoading(false);
+    verifyingRef.current = false;
     if (!ok) {
       setError('Incorrect OTP. Please check the code and try again.');
     } else {

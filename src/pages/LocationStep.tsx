@@ -1,22 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Logo } from '../components/Logo';
 import { PrimaryButton, SecondaryButton } from '../components/Button';
 import { SelectField } from '../components/Select';
 import { ProgressIndicator } from '../components/ProgressIndicator';
-import { Toast } from '../components/Toast';
 import { states, getCities, getColleges } from '../data';
-import { useSignupWizard } from '../hooks/useSignupWizard';
+import { useWizard } from '../context/WizardContext';
 
 async function simulateSubmitProfile(): Promise<void> {
   await new Promise((r) => setTimeout(r, 1000));
 }
 
 export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
-  const wizard = useSignupWizard();
+  const wizard = useWizard();
   const [errors, setErrors] = useState<{ state?: string; city?: string; college?: string }>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
-  const [localToast, setLocalToast] = useState<string | undefined>();
+  const submittingRef = useRef(false);
 
   const cities = wizard.form.state ? getCities(wizard.form.state) : [];
   const colleges = wizard.form.state && wizard.form.city ? getColleges(wizard.form.state, wizard.form.city) : [];
@@ -49,10 +48,12 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
   };
 
   const handleFinish = async () => {
+    if (submittingRef.current) return;
     setTouched({ state: true, city: true, college: true });
     const e = getErrors();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
+    submittingRef.current = true;
     setLoading(true);
     try {
       await simulateSubmitProfile();
@@ -62,6 +63,7 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
       onToast('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
+      submittingRef.current = false;
     }
   };
 
@@ -135,9 +137,6 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
             </SecondaryButton>
           </div>
         </div>
-        {localToast && (
-          <Toast message={localToast} onDismiss={() => setLocalToast(undefined)} />
-        )}
       </div>
     </div>
   );
