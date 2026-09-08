@@ -32,8 +32,8 @@ export function PrimaryButton({
       aria-busy={loading}
       className={[
         'w-full flex items-center justify-center gap-2',
-        'bg-white text-black font-semibold text-[13px] tracking-[0.12em] uppercase',
-        'rounded-full py-[17px] px-6 leading-none',
+        'bg-white text-black font-semibold text-sm tracking-[0.12em] uppercase',
+        'rounded-full py-[19px] px-6 leading-none',
         'transition-all duration-150',
         'focus-ring',
         off ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 active:scale-[0.98] cursor-pointer',
@@ -41,7 +41,7 @@ export function PrimaryButton({
       ].join(' ')}
     >
       {loading && <Spinner size={15} color="#000" />}
-      <span>{loading && loadingText ? loadingText : children}</span>
+      <span className="leading-none">{loading && loadingText ? loadingText : children}</span>
     </button>
   );
 }
@@ -71,8 +71,8 @@ export function SecondaryButton({
       aria-label={ariaLabel}
       className={[
         'w-full flex items-center justify-center',
-        'bg-transparent text-white font-semibold text-[13px] tracking-[0.12em] uppercase',
-        'border border-white/25 rounded-full py-[17px] px-6 leading-none',
+        'bg-transparent text-white font-semibold text-sm tracking-[0.12em] uppercase',
+        'border border-white/25 rounded-full py-[19px] px-6 leading-none',
         'transition-all duration-150',
         'focus-ring',
         disabled

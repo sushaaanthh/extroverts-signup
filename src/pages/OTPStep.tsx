@@ -77,10 +77,10 @@ export function OTPStep() {
           </div>
 
           <div className="mt-10 mb-8">
-            <h1 className="text-[32px] font-extrabold text-white tracking-tight leading-[1.1] uppercase">
+            <h1 className="text-[32px] font-extrabold text-white tracking-tight leading-[1.1]">
               Enter OTP
             </h1>
-            <p className="text-white/35 text-[13px] mt-3 leading-relaxed">
+            <p className="text-white/35 text-sm mt-2.5 leading-relaxed">
               A 6-digit code was sent to{' '}
               <span className="text-white/65 font-semibold break-all">{wizard.form.email}</span>
             </p>

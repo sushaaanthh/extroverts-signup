@@ -79,7 +79,7 @@ export function ProfileStep() {
             <p className="text-white/35 text-sm mt-2.5">Your profile helps us find your people.</p>
           </div>
 
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4">
             <TextInput
               id="name"
               label="Your name"
