@@ -76,6 +76,7 @@ export function OTPInput({ value, onChange, error }: OTPInputProps) {
         className="flex gap-2.5 w-full justify-between"
         role="group"
         aria-label="Enter the 6-digit one-time password"
+        aria-describedby={error ? 'otp-error' : undefined}
       >
         {Array(6).fill(null).map((_, idx) => (
           <input
@@ -105,7 +106,7 @@ export function OTPInput({ value, onChange, error }: OTPInputProps) {
           />
         ))}
       </div>
-      {error && <FormError>{error}</FormError>}
+      {error && <FormError id="otp-error">{error}</FormError>}
     </div>
   );
 }

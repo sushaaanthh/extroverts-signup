@@ -22,6 +22,10 @@ export default function App() {
     }
   }, [wizard.completed]);
 
+  useEffect(() => {
+    setToast(undefined);
+  }, [screen]);
+
   const go = (s: Screen) => setScreen(s);
 
   return (
