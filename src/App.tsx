@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Home } from './pages/Home';
 import { Terms } from './pages/Terms';
 import { EmailStep } from './pages/EmailStep';
@@ -15,12 +15,15 @@ export default function App() {
   const wizard = useSignupWizard();
   const [screen, setScreen] = useState<Screen>('landing');
   const [toast, setToast] = useState<string | undefined>();
+  const initializedRef = useRef(false);
 
   useEffect(() => {
     if (wizard.completed) {
       setScreen('success');
+    } else if (initializedRef.current) {
+      setScreen(wizard.step);
     }
-  }, [wizard.completed]);
+  }, [wizard.step, wizard.completed]);
 
   useEffect(() => {
     setToast(undefined);
@@ -38,7 +41,7 @@ export default function App() {
         )}
 
         {screen === 'terms' && (
-          <Terms onAccept={() => { wizard.goToStep('email'); go('email'); }} />
+          <Terms onAccept={() => { initializedRef.current = true; wizard.goToStep('email'); go('email'); }} />
         )}
 
         {screen === 'email' && <EmailStep />}
