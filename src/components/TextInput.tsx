@@ -1,4 +1,4 @@
-import { type ReactNode, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { FormError } from './Input';
 
 interface TextInputProps {

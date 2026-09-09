@@ -63,6 +63,9 @@ src/
 │   ├── Spinner.tsx
 │   └── Toast.tsx
 │
+├── context/
+│   └── WizardContext.tsx
+│
 ├── data/
 │   └── events.ts
 │
@@ -121,6 +124,12 @@ Vite will normally serve the app at `http://localhost:5173`.
 pnpm run build
 ```
 
+### Preview production build
+
+```bash
+pnpm run preview
+```
+
 ### Type checking
 
 ```bash
@@ -166,7 +175,7 @@ The simulated authentication functions are structured so they can later be repla
 
 ## Architecture
 
-The wizard state is centralized in `src/hooks/useSignupWizard.ts`. This keeps form data and navigation consistent across all signup steps.
+Wizard state is initialized centrally in `src/hooks/useSignupWizard.ts` and exposed to every signup screen through `src/context/WizardContext.tsx`. Pages consume the shared state via `useWizard()`, making the wizard hook the single source of truth for form data and navigation.
 
 There is no backend, database, Firebase, Supabase, or real authentication service. Asynchronous operations are simulated with short delays to demonstrate realistic loading and disabled states.
 
