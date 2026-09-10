@@ -1,54 +1,57 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { PrimaryButton } from './Button';
-import { SecondaryButton } from './Button';
+import { useCallback, useEffect, useRef, useState } from "react"
+import { PrimaryButton } from "./Button"
+import { SecondaryButton } from "./Button"
 
 interface BottomSheetProps {
-  onClose: () => void;
-  onGetStarted: () => void;
+  onClose: () => void
+  onGetStarted: () => void
 }
 
 export function BottomSheet({ onClose, onGetStarted }: BottomSheetProps) {
-  const [exiting, setExiting] = useState(false);
+  const [exiting, setExiting] = useState(false)
 
   const close = useCallback(() => {
-    setExiting(true);
-    setTimeout(onClose, 280);
-  }, [onClose]);
+    setExiting(true)
+    setTimeout(onClose, 280)
+  }, [onClose])
 
-  const sheetRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-    const first = sheetRef.current?.querySelector<HTMLElement>(focusableSelector);
-    first?.focus();
+    const focusableSelector =
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    const first =
+      sheetRef.current?.querySelector<HTMLElement>(focusableSelector)
+    first?.focus()
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        close();
-        return;
+      if (e.key === "Escape") {
+        close()
+        return
       }
-      if (e.key === 'Tab') {
-        const focusable = sheetRef.current?.querySelectorAll<HTMLElement>(focusableSelector);
-        if (!focusable || focusable.length === 0) return;
-        const firstEl = focusable[0];
-        const lastEl = focusable[focusable.length - 1];
+      if (e.key === "Tab") {
+        const focusable =
+          sheetRef.current?.querySelectorAll<HTMLElement>(focusableSelector)
+        if (!focusable || focusable.length === 0) return
+        const firstEl = focusable[0]
+        const lastEl = focusable[focusable.length - 1]
         if (e.shiftKey && document.activeElement === firstEl) {
-          e.preventDefault();
-          lastEl.focus();
+          e.preventDefault()
+          lastEl.focus()
         } else if (!e.shiftKey && document.activeElement === lastEl) {
-          e.preventDefault();
-          firstEl.focus();
+          e.preventDefault()
+          firstEl.focus()
         }
       }
-    };
+    }
 
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = "hidden"
+    document.addEventListener("keydown", handleKeyDown)
 
     return () => {
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [close]);
+      document.body.style.overflow = ""
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [close])
 
   return (
     <div
@@ -65,10 +68,10 @@ export function BottomSheet({ onClose, onGetStarted }: BottomSheetProps) {
       <div
         ref={sheetRef}
         className={[
-          'relative z-10 w-full max-w-sm bg-[#080808] border-t border-x border-white/[0.08]',
-          'rounded-t-3xl px-6 pt-7 pb-12',
-          exiting ? 'sheet-exit' : 'sheet-enter',
-        ].join(' ')}
+          "relative z-10 w-full max-w-sm bg-[#080808] border-t border-x border-white/[0.08]",
+          "rounded-t-3xl px-6 pt-7 pb-12",
+          exiting ? "sheet-exit" : "sheet-enter",
+        ].join(" ")}
       >
         <div
           className="absolute top-3 left-1/2 -translate-x-1/2 w-9 h-[3px] bg-white/15 rounded-full"
@@ -104,5 +107,5 @@ export function BottomSheet({ onClose, onGetStarted }: BottomSheetProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

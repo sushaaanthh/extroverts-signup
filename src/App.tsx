@@ -1,58 +1,62 @@
-import { useState, useEffect, useRef } from 'react';
-import { Home } from './pages/Home';
-import { Terms } from './pages/Terms';
-import { EmailStep } from './pages/EmailStep';
-import { OTPStep } from './pages/OTPStep';
-import { ProfileStep } from './pages/ProfileStep';
-import { LocationStep } from './pages/LocationStep';
-import { Success } from './pages/Success';
-import { Toast } from './components/Toast';
-import { useSignupWizard } from './hooks/useSignupWizard';
-import { WizardProvider } from './context/WizardContext';
-import type { Screen } from './types/signup';
+import { useState, useEffect, useRef } from "react"
+import { Home } from "./pages/Home"
+import { Terms } from "./pages/Terms"
+import { EmailStep } from "./pages/EmailStep"
+import { OTPStep } from "./pages/OTPStep"
+import { ProfileStep } from "./pages/ProfileStep"
+import { LocationStep } from "./pages/LocationStep"
+import { Success } from "./pages/Success"
+import { Toast } from "./components/Toast"
+import { useSignupWizard } from "./hooks/useSignupWizard"
+import { WizardProvider } from "./context/WizardContext"
+import type { Screen } from "./types/signup"
 
 export default function App() {
-  const wizard = useSignupWizard();
-  const [screen, setScreen] = useState<Screen>('landing');
-  const [toast, setToast] = useState<string | undefined>();
-  const initializedRef = useRef(false);
+  const wizard = useSignupWizard()
+  const [screen, setScreen] = useState<Screen>("landing")
+  const [toast, setToast] = useState<string | undefined>()
+  const initializedRef = useRef(false)
 
   useEffect(() => {
     if (wizard.completed) {
-      setScreen('success');
+      setScreen("success")
     } else if (initializedRef.current) {
-      setScreen(wizard.step);
+      setScreen(wizard.step)
     }
-  }, [wizard.step, wizard.completed]);
+  }, [wizard.step, wizard.completed])
 
   useEffect(() => {
-    setToast(undefined);
-  }, [screen]);
+    setToast(undefined)
+  }, [screen])
 
-  const go = (s: Screen) => setScreen(s);
+  const go = (s: Screen) => setScreen(s)
 
   return (
     <WizardProvider value={wizard}>
       <div className="min-h-screen bg-black">
-        {toast && <Toast message={toast} onDismiss={() => setToast(undefined)} />}
-
-        {screen === 'landing' && (
-          <Home onGetStarted={() => go('terms')} />
+        {toast && (
+          <Toast message={toast} onDismiss={() => setToast(undefined)} />
         )}
 
-        {screen === 'terms' && (
-          <Terms onAccept={() => { initializedRef.current = true; wizard.goToStep('email'); go('email'); }} />
+        {screen === "landing" && <Home onGetStarted={() => go("terms")} />}
+
+        {screen === "terms" && (
+          <Terms
+            onAccept={() => {
+              initializedRef.current = true
+              wizard.goToStep("email")
+              go("email")
+            }}
+          />
         )}
 
-        {screen === 'email' && <EmailStep />}
-        {screen === 'otp' && <OTPStep />}
-        {screen === 'profile' && <ProfileStep />}
-        {screen === 'location' && (
-          <LocationStep onToast={(m) => setToast(m)} />
-        )}
+        {screen === "email" && <EmailStep />}
+        {screen === "otp" && <OTPStep />}
+        {screen === "profile" && <ProfileStep />}
+        {screen === "location" && <LocationStep onToast={(m) => setToast(m)} />}
 
-        {screen === 'success' && <Success name={wizard.form.name} />}
+        {screen === "success" && <Success name={wizard.form.name} />}
       </div>
     </WizardProvider>
-  );
+  )
 }

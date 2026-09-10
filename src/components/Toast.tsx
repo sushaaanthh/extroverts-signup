@@ -1,18 +1,18 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react"
 
 interface ToastProps {
-  message: string;
-  onDismiss: () => void;
+  message: string
+  onDismiss: () => void
 }
 
 export function Toast({ message, onDismiss }: ToastProps) {
-  const onDismissRef = useRef(onDismiss);
-  onDismissRef.current = onDismiss;
+  const onDismissRef = useRef(onDismiss)
+  onDismissRef.current = onDismiss
 
   useEffect(() => {
-    const t = setTimeout(() => onDismissRef.current(), 4500);
-    return () => clearTimeout(t);
-  }, [message]);
+    const t = setTimeout(() => onDismissRef.current(), 4500)
+    return () => clearTimeout(t)
+  }, [message])
 
   return (
     <div
@@ -22,11 +22,32 @@ export function Toast({ message, onDismiss }: ToastProps) {
     >
       <div className="bg-[#1a1a1a] border border-white/12 rounded-2xl px-4 py-3.5 flex items-center justify-between gap-3 shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
         <div className="flex items-center gap-3 min-w-0">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0 text-red-400" aria-hidden="true">
-            <circle cx="8" cy="8" r="7" stroke="currentColor" strokeOpacity="0.8" strokeWidth="1.5" />
-            <path d="M8 5v3.5M8 10.5h.01" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            className="flex-shrink-0 text-red-400"
+            aria-hidden="true"
+          >
+            <circle
+              cx="8"
+              cy="8"
+              r="7"
+              stroke="currentColor"
+              strokeOpacity="0.8"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M8 5v3.5M8 10.5h.01"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+            />
           </svg>
-          <p className="text-white text-sm font-medium leading-snug truncate">{message}</p>
+          <p className="text-white text-sm font-medium leading-snug truncate">
+            {message}
+          </p>
         </div>
         <button
           onClick={onDismiss}
@@ -37,5 +58,5 @@ export function Toast({ message, onDismiss }: ToastProps) {
         </button>
       </div>
     </div>
-  );
+  )
 }

@@ -1,71 +1,78 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { Logo } from '../components/Logo';
-import { PrimaryButton, SecondaryButton } from '../components/Button';
-import { SelectField } from '../components/Select';
-import { ProgressIndicator } from '../components/ProgressIndicator';
-import { states, getCities, getColleges } from '../data';
-import { useWizard } from '../context/WizardContext';
+import { useState, useEffect, useCallback, useRef } from "react"
+import { Logo } from "../components/Logo"
+import { PrimaryButton, SecondaryButton } from "../components/Button"
+import { SelectField } from "../components/Select"
+import { ProgressIndicator } from "../components/ProgressIndicator"
+import { states, getCities, getColleges } from "../data"
+import { useWizard } from "../context/WizardContext"
 
 async function simulateSubmitProfile(): Promise<void> {
-  await new Promise((r) => setTimeout(r, 1000));
+  await new Promise((r) => setTimeout(r, 1000))
 }
 
 export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
-  const wizard = useWizard();
-  const [errors, setErrors] = useState<{ state?: string; city?: string; college?: string }>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [loading, setLoading] = useState(false);
-  const submittingRef = useRef(false);
+  const wizard = useWizard()
+  const [errors, setErrors] = useState<{
+    state?: string
+    city?: string
+    college?: string
+  }>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
+  const [loading, setLoading] = useState(false)
+  const submittingRef = useRef(false)
 
-  const cities = wizard.form.state ? getCities(wizard.form.state) : [];
-  const colleges = wizard.form.state && wizard.form.city ? getColleges(wizard.form.state, wizard.form.city) : [];
+  const cities = wizard.form.state ? getCities(wizard.form.state) : []
+  const colleges =
+    wizard.form.state && wizard.form.city
+      ? getColleges(wizard.form.state, wizard.form.city)
+      : []
 
   const getErrors = useCallback(() => {
-    const e: { state?: string; city?: string; college?: string } = {};
-    if (!wizard.form.state) e.state = 'Please select your state.';
-    if (!wizard.form.city) e.city = 'Please select your city.';
-    if (!wizard.form.college) e.college = 'Please select your institution.';
-    return e;
-  }, [wizard.form]);
+    const e: { state?: string city?: string college?: string } = {}
+    if (!wizard.form.state) e.state = "Please select your state."
+    if (!wizard.form.city) e.city = "Please select your city."
+    if (!wizard.form.college) e.college = "Please select your institution."
+    return e
+  }, [wizard.form])
 
   useEffect(() => {
-    const all = getErrors();
+    const all = getErrors()
     setErrors({
       state: touched.state ? all.state : undefined,
       city: touched.city ? all.city : undefined,
       college: touched.college ? all.college : undefined,
-    });
-  }, [wizard.form, touched, getErrors]);
+    })
+  }, [wizard.form, touched, getErrors])
 
   const handleStateChange = (val: string) => {
-    wizard.updateForm({ state: val, city: '', college: '' });
-    setTouched((t) => ({ ...t, state: true, city: false, college: false }));
-  };
+    wizard.updateForm({ state: val, city: "", college: "" })
+    setTouched((t) => ({ ...t, state: true, city: false, college: false }))
+  }
 
   const handleCityChange = (val: string) => {
-    wizard.updateForm({ city: val, college: '' });
-    setTouched((t) => ({ ...t, city: true, college: false }));
-  };
+    wizard.updateForm({ city: val, college: "" })
+    setTouched((t) => ({ ...t, city: true, college: false }))
+  }
 
   const handleFinish = async () => {
-    if (submittingRef.current) return;
-    setTouched({ state: true, city: true, college: true });
-    const e = getErrors();
-    setErrors(e);
-    if (Object.keys(e).length > 0) return;
-    submittingRef.current = true;
-    setLoading(true);
+    if (submittingRef.current) return
+    setTouched({ state: true, city: true, college: true })
+    const e = getErrors()
+    setErrors(e)
+    if (Object.keys(e).length > 0) return
+    submittingRef.current = true
+    setLoading(true)
     try {
-      await simulateSubmitProfile();
-      wizard.setCompleted(true);
-      wizard.goToStep('location');
+      await simulateSubmitProfile()
+      wizard.setCompleted(true)
+      wizard.goToStep("location")
     } catch {
-      onToast('Something went wrong. Please try again.');
+      onToast("Something went wrong. Please try again.")
     } finally {
-      setLoading(false);
-      submittingRef.current = false;
+      setLoading(false)
+      submittingRef.current = false
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-black flex justify-center">
@@ -78,9 +85,13 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
 
           <div className="mt-10 mb-8">
             <h1 className="text-[32px] font-extrabold text-white tracking-tight leading-[1.1]">
-              Where are<br />you based?
+              Where are
+              <br />
+              you based?
             </h1>
-            <p className="text-white/35 text-sm mt-2.5">Help us surface events in your area.</p>
+            <p className="text-white/35 text-sm mt-2.5">
+              Help us surface events in your area.
+            </p>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -112,8 +123,8 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
               label="College / Institution"
               value={wizard.form.college}
               onChange={(val) => {
-                wizard.updateForm({ college: val });
-                setTouched((t) => ({ ...t, college: true }));
+                wizard.updateForm({ college: val })
+                setTouched((t) => ({ ...t, college: true }))
               }}
               onBlur={() => setTouched((t) => ({ ...t, college: true }))}
               options={colleges}
@@ -139,5 +150,5 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { Logo } from '../components/Logo';
-import { PrimaryButton } from '../components/Button';
-import { BottomSheet } from '../components/BottomSheet';
-import { EVENTS } from '../data/events';
+import { useState } from "react"
+import { Logo } from "../components/Logo"
+import { PrimaryButton } from "../components/Button"
+import { BottomSheet } from "../components/BottomSheet"
+import { EVENTS } from "../data/events"
 
 interface HomeProps {
-  onGetStarted: () => void;
+  onGetStarted: () => void
 }
 
 export function Home({ onGetStarted }: HomeProps) {
-  const [showSheet, setShowSheet] = useState(false);
+  const [showSheet, setShowSheet] = useState(false)
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -26,7 +26,9 @@ export function Home({ onGetStarted }: HomeProps) {
           </header>
 
           <div className="px-5 pt-1 pb-5">
-            <p className="text-white/30 text-sm font-medium">Events near you. People like you.</p>
+            <p className="text-white/30 text-sm font-medium">
+              Events near you. People like you.
+            </p>
           </div>
 
           <div className="px-5 mb-3 flex items-center justify-between">
@@ -53,7 +55,9 @@ export function Home({ onGetStarted }: HomeProps) {
                         {ev.tag}
                       </span>
                     )}
-                    <p className="text-white font-semibold text-sm leading-snug">{ev.title}</p>
+                    <p className="text-white font-semibold text-sm leading-snug">
+                      {ev.title}
+                    </p>
                   </div>
                   <p className="text-white/30 text-xs mt-0.5">{ev.location}</p>
                   <p className="text-white/20 text-[11px] mt-0.5">{ev.time}</p>
@@ -85,5 +89,5 @@ export function Home({ onGetStarted }: HomeProps) {
         />
       )}
     </div>
-  );
+  )
 }
