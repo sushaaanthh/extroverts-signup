@@ -28,7 +28,7 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
       : []
 
   const getErrors = useCallback(() => {
-    const e: { state?: string city?: string college?: string } = {}
+    const e: { state?: string; city?: string; college?: string } = {}
     if (!wizard.form.state) e.state = "Please select your state."
     if (!wizard.form.city) e.city = "Please select your city."
     if (!wizard.form.college) e.college = "Please select your institution."

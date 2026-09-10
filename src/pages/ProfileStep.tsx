@@ -38,7 +38,7 @@ export function ProfileStep() {
   const submittingRef = useRef(false)
 
   const getErrors = useCallback(() => {
-    const e: { name?: string age?: string pronouns?: string } = {}
+    const e: { name?: string; age?: string; pronouns?: string } = {}
     const ne = validateName(wizard.form.name)
     if (ne) e.name = ne
     const ae = validateAge(wizard.form.age)
