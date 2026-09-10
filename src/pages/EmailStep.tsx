@@ -82,6 +82,7 @@ export function EmailStep() {
               autoFocus
               autoComplete="email"
               inputMode="email"
+              maxLength={254}
             />
 
             <Checkbox
