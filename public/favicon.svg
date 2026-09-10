@@ -1,5 +1,47 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#000"/>
-  <path fill="#fff" d="M13 11h27v9H23v7h15v9H23v8h17v9H13z"/>
-  <circle cx="51" cy="32" r="4" fill="#555"/>
+  <defs>
+    <radialGradient id="blue" cx="0.02" cy="0.46" r="0.82">
+      <stop offset="0" stop-color="#173dca"/>
+      <stop offset="0.48" stop-color="#25108d" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#090512" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="violet" cx="0.42" cy="0.78" r="0.7">
+      <stop offset="0" stop-color="#a30d9a" stop-opacity="0.94"/>
+      <stop offset="0.5" stop-color="#5e087d" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#0b0615" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm" cx="0.98" cy="0.94" r="0.68">
+      <stop offset="0" stop-color="#ff3e27" stop-opacity="0.98"/>
+      <stop offset="0.48" stop-color="#c41665" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#170719" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="topShade" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#010207"/>
+      <stop offset="0.45" stop-color="#050313" stop-opacity="0.76"/>
+      <stop offset="1" stop-color="#16051a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="logoGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.05" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="texture" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.42" numOctaves="2" seed="17"/>
+      <feColorMatrix values="1 0 0 0 0.18  0 1 0 0 0.08  0 0 1 0 0.2  0 0 0 0.16 0"/>
+    </filter>
+    <path id="mark" fill="#fff" d="
+      M13 14H44V27H37.5C35.7 22.2 32.2 19.4 27.3 18.8H23.8V29.8H35.1V40.2H23.8V49.2H27.6C32.2 48.7 35.6 45.9 37.5 41H44V54H13V50.5H16.5V17.5H13Z"/>
+  </defs>
+  <rect width="64" height="64" fill="#05040b"/>
+  <rect width="64" height="64" fill="url(#blue)"/>
+  <rect width="64" height="64" fill="url(#violet)"/>
+  <rect width="64" height="64" fill="url(#warm)"/>
+  <rect width="64" height="64" fill="url(#topShade)"/>
+  <rect width="64" height="64" filter="url(#texture)" opacity="0.48"/>
+  <use href="#mark" filter="url(#logoGlow)" opacity="0.96"/>
+  <use href="#mark"/>
+  <circle cx="51" cy="16.5" r="5.2" fill="#fff" filter="url(#logoGlow)"/>
+  <circle cx="51" cy="16.5" r="5" fill="#fff"/>
 </svg>
