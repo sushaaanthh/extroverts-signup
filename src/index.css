@@ -20,21 +20,17 @@ body,
   box-sizing: border-box;
 }
 
-/* Hide scrollbar — surface on scroll only */
 ::-webkit-scrollbar { width: 0; }
 
-/* ── Spinner ─────────────────────────────────────────────────────────────── */
 @keyframes spin { to { transform: rotate(360deg); } }
 .spinner { animation: spin 0.75s linear infinite; }
 
-/* ── Step transitions ────────────────────────────────────────────────────── */
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .step-enter { animation: fadeSlideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-/* ── Bottom sheet ────────────────────────────────────────────────────────── */
 @keyframes slideUp {
   from { transform: translateY(100%); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
@@ -46,24 +42,17 @@ body,
 .sheet-enter { animation: slideUp   0.38s cubic-bezier(0.32, 0.72, 0, 1) both; }
 .sheet-exit  { animation: slideDown 0.28s cubic-bezier(0.32, 0.72, 0, 1) both; }
 
-/* ── Toast ───────────────────────────────────────────────────────────────── */
 @keyframes toastIn {
   from { opacity: 0; transform: translateY(-10px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .toast-enter { animation: toastIn 0.22s ease both; }
 
-/* ── Focus ring ──────────────────────────────────────────────────────────── */
 .focus-ring:focus-visible {
   outline: 2px solid rgba(255,255,255,0.5);
   outline-offset: 2px;
 }
 
-/* ── Suppress number spinners ────────────────────────────────────────────── */
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-
-/* ── Select: custom dark arrow ───────────────────────────────────────────── */
 select {
   appearance: none;
   -webkit-appearance: none;
@@ -74,5 +63,4 @@ select {
 }
 select option { background: var(--surface-elevated); color: #fff; }
 
-/* ── OTP caret hidden (we use block cursor feel) ─────────────────────────── */
 .caret-transparent { caret-color: transparent; }

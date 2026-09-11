@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import { Spinner } from "./Spinner"
 
-interface PrimaryBtnProps {
+interface PrimaryButtonProps {
   children: ReactNode
   onClick?: () => void
   type?: "button" | "submit"
@@ -21,7 +21,7 @@ export function PrimaryButton({
   disabled = false,
   className = "",
   "aria-label": ariaLabel,
-}: PrimaryBtnProps) {
+}: PrimaryButtonProps) {
   const off = disabled || loading
   return (
     <button
@@ -50,7 +50,7 @@ export function PrimaryButton({
   )
 }
 
-interface SecondaryBtnProps {
+interface SecondaryButtonProps {
   children: ReactNode
   onClick?: () => void
   type?: "button" | "submit"
@@ -66,7 +66,7 @@ export function SecondaryButton({
   disabled = false,
   className = "",
   "aria-label": ariaLabel,
-}: SecondaryBtnProps) {
+}: SecondaryButtonProps) {
   return (
     <button
       type={type}
@@ -90,7 +90,7 @@ export function SecondaryButton({
   )
 }
 
-interface TextBtnProps {
+interface TextButtonProps {
   children: ReactNode
   onClick?: () => void
   disabled?: boolean
@@ -102,7 +102,7 @@ export function TextButton({
   onClick,
   disabled = false,
   className = "",
-}: TextBtnProps) {
+}: TextButtonProps) {
   return (
     <button
       type="button"

@@ -7,6 +7,7 @@ import {
   type ChangeEvent,
 } from "react"
 import { FormError } from "./Input"
+import { OTP_LENGTH } from "../types/signup"
 
 interface OTPInputProps {
   value: string[]
@@ -18,7 +19,7 @@ export function OTPInput({ value, onChange, error }: OTPInputProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   const focusAt = useCallback((idx: number) => {
-    const el = inputRefs.current[Math.max(0, Math.min(5, idx))]
+    const el = inputRefs.current[Math.max(0, Math.min(OTP_LENGTH - 1, idx))]
     el?.focus()
     setTimeout(() => el?.select(), 0)
   }, [])
@@ -35,7 +36,7 @@ export function OTPInput({ value, onChange, error }: OTPInputProps) {
       const next = [...value]
       next[idx] = digit
       onChange(next)
-      if (idx < 5) focusAt(idx + 1)
+      if (idx < OTP_LENGTH - 1) focusAt(idx + 1)
     },
     [value, onChange, focusAt],
   )
@@ -70,14 +71,14 @@ export function OTPInput({ value, onChange, error }: OTPInputProps) {
       const text = e.clipboardData
         .getData("text")
         .replace(/\D/g, "")
-        .slice(0, 6)
+        .slice(0, OTP_LENGTH)
       if (!text) return
-      const next = Array(6).fill("")
+      const next = Array(OTP_LENGTH).fill("")
       text.split("").forEach((d, i) => {
         next[i] = d
       })
       onChange(next)
-      focusAt(Math.min(text.length, 5))
+      focusAt(Math.min(text.length, OTP_LENGTH - 1))
     },
     [onChange, focusAt],
   )
@@ -90,7 +91,7 @@ export function OTPInput({ value, onChange, error }: OTPInputProps) {
         aria-label="Enter the 6-digit one-time password"
         aria-describedby={error ? "otp-error" : undefined}
       >
-        {Array(6)
+        {Array(OTP_LENGTH)
           .fill(null)
           .map((_, idx) => (
             <input
@@ -107,7 +108,7 @@ export function OTPInput({ value, onChange, error }: OTPInputProps) {
               onKeyDown={(e) => handleKeyDown(idx, e)}
               onPaste={handlePaste}
               onFocus={(e) => e.target.select()}
-              aria-label={`Digit ${idx + 1} of 6`}
+              aria-label={`Digit ${idx + 1} of ${OTP_LENGTH}`}
               className={[
                 "flex-1 min-w-0 h-[60px] text-center text-2xl font-bold text-white",
                 "bg-transparent border rounded-2xl",

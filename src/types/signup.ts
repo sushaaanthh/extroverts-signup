@@ -13,3 +13,5 @@ export interface FormState {
 export type SignupStep = "email" | "otp" | "profile" | "location"
 
 export type Screen = "landing" | "terms" | "email" | "otp" | "profile" | "location" | "success"
+
+export const OTP_LENGTH = 6

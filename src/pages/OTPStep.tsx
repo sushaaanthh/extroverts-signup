@@ -9,11 +9,12 @@ import { OTPInput } from "../components/OTPInput"
 import { ProgressIndicator } from "../components/ProgressIndicator"
 import { Toast } from "../components/Toast"
 import { useWizard } from "../context/WizardContext"
+import { OTP_LENGTH } from "../types/signup"
 
 const DEMO_OTP = "123456"
 const RESEND_COOLDOWN = 24
 
-async function verifyOtp(code: string): Promise<boolean> {
+async function verifyOtpCode(code: string): Promise<boolean> {
   await new Promise((r) => setTimeout(r, 800))
   return code === DEMO_OTP
 }
@@ -50,7 +51,7 @@ export function OTPStep() {
 
   const handleResend = () => {
     if (resendCountdown > 0) return
-    wizard.updateForm({ otp: Array(6).fill("") })
+    wizard.updateForm({ otp: Array(OTP_LENGTH).fill("") })
     setError(undefined)
     setToast("OTP sent again.")
     startCountdown(RESEND_COOLDOWN)
@@ -59,14 +60,14 @@ export function OTPStep() {
   const handleVerify = async () => {
     if (verifyingRef.current) return
     const code = wizard.form.otp.join("")
-    if (code.length < 6) {
-      setError("Please enter the 6-digit OTP.")
+    if (code.length < OTP_LENGTH) {
+      setError(`Please enter the ${OTP_LENGTH}-digit OTP.`)
       return
     }
     verifyingRef.current = true
     setLoading(true)
     setError(undefined)
-    const isValidOtp = await verifyOtp(code)
+    const isValidOtp = await verifyOtpCode(code)
     setLoading(false)
     verifyingRef.current = false
     if (!isValidOtp) {

@@ -6,7 +6,7 @@ import { ProgressIndicator } from "../components/ProgressIndicator"
 import { states, getCities, getColleges } from "../data"
 import { useWizard } from "../context/WizardContext"
 
-async function simulateSubmitProfile(): Promise<void> {
+async function simulateProfileCreation(): Promise<void> {
   await new Promise((r) => setTimeout(r, 1000))
 }
 
@@ -63,9 +63,8 @@ export function LocationStep({ onToast }: { onToast: (msg: string) => void }) {
     submittingRef.current = true
     setLoading(true)
     try {
-      await simulateSubmitProfile()
+      await simulateProfileCreation()
       wizard.setCompleted(true)
-      wizard.goToStep("location")
     } catch {
       onToast("Something went wrong. Please try again.")
     } finally {

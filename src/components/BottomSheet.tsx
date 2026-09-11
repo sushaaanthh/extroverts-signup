@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { PrimaryButton } from "./Button"
-import { SecondaryButton } from "./Button"
+import { PrimaryButton, SecondaryButton } from "./Button"
 
 interface BottomSheetProps {
   onClose: () => void

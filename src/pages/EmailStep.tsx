@@ -6,7 +6,7 @@ import { Checkbox } from "../components/Checkbox"
 import { ProgressIndicator } from "../components/ProgressIndicator"
 import { useWizard } from "../context/WizardContext"
 
-async function simulateSendEmail(_email: string): Promise<void> {
+async function simulateEmailSubmission(_email: string): Promise<void> {
   await new Promise((r) => setTimeout(r, 800))
 }
 
@@ -41,7 +41,7 @@ export function EmailStep() {
     submittingRef.current = true
     setLoading(true)
     try {
-      await simulateSendEmail(wizard.form.email)
+      await simulateEmailSubmission(wizard.form.email)
       wizard.goNext()
     } catch {
       setError("Something went wrong. Please try again.")

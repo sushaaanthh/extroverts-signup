@@ -1,10 +1,11 @@
 import { useState, useCallback } from "react"
 import type { FormState, SignupStep } from "../types/signup"
+import { OTP_LENGTH } from "../types/signup"
 
 const EMPTY_FORM_STATE: FormState = {
   email: "",
   newsletterOptIn: false,
-  otp: Array(6).fill(""),
+  otp: Array(OTP_LENGTH).fill(""),
   name: "",
   age: "",
   pronouns: "",
@@ -38,7 +39,7 @@ export function useSignupWizard(): UseSignupWizardReturn {
       if (idx < STEP_ORDER.length - 1) {
         const next = STEP_ORDER[idx + 1]
         if (prev === "email" && next === "otp") {
-          setForm((f) => ({ ...f, otp: Array(6).fill("") }))
+          setForm((f) => ({ ...f, otp: Array(OTP_LENGTH).fill("") }))
         }
         return next
       }
@@ -52,7 +53,7 @@ export function useSignupWizard(): UseSignupWizardReturn {
       if (idx > 0) {
         const prevStep = STEP_ORDER[idx - 1]
         if (prev === "otp" && prevStep === "email") {
-          setForm((f) => ({ ...f, otp: Array(6).fill("") }))
+          setForm((f) => ({ ...f, otp: Array(OTP_LENGTH).fill("") }))
         }
         return prevStep
       }

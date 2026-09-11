@@ -29,8 +29,6 @@ export default function App() {
     setToast(undefined)
   }, [screen])
 
-  const go = (s: Screen) => setScreen(s)
-
   return (
     <WizardProvider value={wizard}>
       <div className="min-h-screen bg-black">
@@ -38,14 +36,16 @@ export default function App() {
           <Toast message={toast} onDismiss={() => setToast(undefined)} />
         )}
 
-        {screen === "landing" && <Home onGetStarted={() => go("terms")} />}
+        {screen === "landing" && (
+          <Home onGetStarted={() => setScreen("terms")} />
+        )}
 
         {screen === "terms" && (
           <Terms
             onAccept={() => {
               initializedRef.current = true
               wizard.goToStep("email")
-              go("email")
+              setScreen("email")
             }}
           />
         )}
